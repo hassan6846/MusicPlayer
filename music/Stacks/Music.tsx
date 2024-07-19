@@ -14,7 +14,7 @@ import { Avatar, Text} from "@rneui/themed";
 import { getHeight } from "../utils/GetDimensions";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const Music = ({ navigation }) => {
+const Music = ({ navigation }:{navigation:any}) => {
   const [audioFiles, setAudioFiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);

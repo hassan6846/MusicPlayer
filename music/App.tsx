@@ -19,7 +19,7 @@ import AllowPermissions from './Stacks/AllowPermissions';
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const App = () => {
+const Main = () => {
   const [hasPermission, setHasPermission] = useState(null);
 
   useEffect(() => {
@@ -46,23 +46,12 @@ const App = () => {
     checkPermissions();
   }, []);
 
-  if (hasPermission === null) {
-    // Still checking permissions
-    return <View><Text>Checking permissions...</Text></View>;
-  }
 
-  if (hasPermission === false) {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Permissions" component={AllowPermissions} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
+
+
 
   return (
-    <NavigationContainer>
+  
       <Tab.Navigator shifting={true}>
         <Tab.Screen
       
@@ -104,8 +93,19 @@ const App = () => {
         />
       </Tab.Navigator>
   
-    </NavigationContainer>
+   
   );
 };
-
+const App=()=>{
+  return(
+    <NavigationContainer>
+    <Stack.Navigator initialRouteName="Main" screenOptions={{headerShown:false}}>
+      <Stack.Screen  name="Main" component={Main} />
+      <Stack.Screen name="Permissions" component={AllowPermissions} />
+      <Stack.Screen  name="Player" component={Player} options={{headerLeft: null,cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS}} />
+      <Stack.Screen name="VideoPlayer" component={VideoPlayer} options={{headerLeft: null,cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS}} />
+    </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
 export default App;
