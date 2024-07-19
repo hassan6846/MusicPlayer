@@ -65,9 +65,11 @@ const App = () => {
     <NavigationContainer>
       <Tab.Navigator shifting={true}>
         <Tab.Screen
+      
           name="Music"
           component={Music}
           options={{
+            
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons name="music" color={color} size={26} />
             ),
