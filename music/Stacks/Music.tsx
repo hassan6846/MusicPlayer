@@ -82,7 +82,8 @@ const Music = ({ navigation }) => {
 
             <View style={{ marginLeft: 20 }}>
               <Text  style={{ fontSize: 15, fontWeight: "bold" }}>
-                {item.filename}
+              {item.filename.length > 30 ? `${item.filename.substring(0, 20)}...` : item.filename}
+            
               </Text>
               <View style={{ flexDirection: "row", columnGap: 3 }}>
                 <Text style={{ fontSize: 14, color: "gray" }}>
