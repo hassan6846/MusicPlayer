@@ -1,4 +1,4 @@
-package com.music;
+package com.hassanhst.music;
 
 import android.app.Application;
 import android.content.res.Configuration;
