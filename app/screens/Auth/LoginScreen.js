@@ -19,22 +19,22 @@ const LoginScreen = () => {
         console.log("Login Screen Rendered")
     })
     return (
-        <LinearGradient   colors={["#0d0d14", "#1c1f42", "#3a3f7a"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}style={{ flex: 1 }} >
+        <LinearGradient colors={["#0d0d14", "#1c1f42", "#3a3f7a"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }} style={{ flex: 1 }} >
             <SafeAreaView>
 
                 <View style={{ height: 100, alignItems: "center", width: "100%", justifyContent: "center" }} />
-                <View style={{justifyContent:"center",alignItems:'center'}}>    
-                     <Entypo name="spotify" size={100} color="white" />
-                     
-                     </View>
+                <View style={{ justifyContent: "center", alignItems: 'center' }}>
+                    <Entypo name="spotify" size={100} color="white" />
+
+                </View>
                 <Text
                     style={{
-                        color: "white",
+                        color: "#fff",
                         fontSize: 40,
                         fontWeight: "bold",
-                        paddingHorizontal:10,
+                        paddingHorizontal: 10,
                         textAlign: "center",
                         marginTop: 40,
                     }}
