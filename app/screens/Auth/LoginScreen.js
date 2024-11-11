@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, Pressable } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, Pressable, TouchableOpacity } from "react-native";
 import React, { useEffect } from "react";
 
 //navigation
@@ -8,20 +8,48 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 //icons
 import Entypo from '@expo/vector-icons/Entypo';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+//Session
+import * as AppAuth from "expo-auth-session";
 
 
 
 //gradient
 import { LinearGradient } from "expo-linear-gradient"
 const LoginScreen = () => {
+    //Function Login
+    const HandleAuth = async () => {
+        const config={
+            issuer:"https://accounts.spotify.com",
+            clientId:'fc17ece7b199440bae7b73857369430b',
+            scopes:[
+                "user-read-email",
+                "user-library-read",
+                "user-read-recently-played",
+                "user-top-read",
+                "playlist-read-private",
+                "playlist-read-collaborative",
+                "playlist-modify-public" 
+            ],
+              redirectUrl:"exp://localhost:19002/--/spotify-auth-callback"
+        }
+     
+        try {
+            const result=await AppAuth.auth
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
     useEffect(() => {
         console.log("Login Screen Rendered")
     })
+
+
     return (
-        <LinearGradient colors={["#0d0d14", "#1c1f42", "#3a3f7a"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }} style={{ flex: 1 }} >
+        <LinearGradient colors={["#0d0d14", "#1c1f42"]}
+
+            style={{ flex: 1 }} >
             <SafeAreaView>
 
                 <View style={{ height: 100, alignItems: "center", width: "100%", justifyContent: "center" }} />
@@ -43,8 +71,8 @@ const LoginScreen = () => {
                 </Text>
 
                 <View style={{ height: 80 }} />
-                <Pressable
-
+                <TouchableOpacity
+                    onPress={HandleAuth}
                     style={{
                         backgroundColor: "#1DB954",
                         padding: 10,
@@ -59,7 +87,7 @@ const LoginScreen = () => {
                 >
 
                     <Text>Sign In with spotify</Text>
-                </Pressable>
+                </TouchableOpacity>
 
                 <Pressable
                     style={{
