@@ -15,6 +15,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { bottomTabs, TabHeight } from "./utils/BottomTabs";
+import TracksPage from "./Page/TracksPage";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -35,8 +36,10 @@ export default function App() {
     <NavigationContainer >
 
       <Stack.Navigator >
-      <Stack.Screen name="Main" options={{ headerShown: false }} component={Main} />
+      <Stack.Screen name="Tracks" options={{ headerShown: true, presentation: "modal", headerShadowVisible: false, headerTitleAlign: "center", headerTitle: "Now Playing", cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS }} component={TracksPage} />
 
+      <Stack.Screen name="Main" options={{ headerShown: false }} component={Main} />
+ 
         <Stack.Screen name="Player" options={{ headerShown: true, presentation: "modal", headerShadowVisible: false, headerTitleAlign: "center", headerTitle: "Now Playing", cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS }} component={PlayerPage} />
 
       </Stack.Navigator>

@@ -6,7 +6,8 @@ import { useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Icon, Avatar } from '@rneui/themed';
 import Slider from "@react-native-community/slider";
-
+//Player
+import {Audio} from "expo-av"
 const PlayerPage = () => {
     const route = useRoute<any>();
 

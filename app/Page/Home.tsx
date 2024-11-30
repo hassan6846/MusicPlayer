@@ -4,10 +4,55 @@ import React from 'react'
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Avatar } from '@rneui/themed'
 
-const Home = ({navigation}:{navigation:any}) => {
-  React.useEffect(()=>{
+const Home = ({ navigation }: { navigation: any }) => {
+  const [artistsData, setArtistsData] = React.useState<any>([]);
+  const [loading, setLoading] = React.useState<any>(true);
+  const [error, setError] = React.useState<any>(null);
+  React.useEffect(() => {
+    const fetchRandomArtistData = async () => {
+      const fetchPromises = [];
+      const numCalls = 10;
 
-})
+      // Generate random IDs and create API requests
+      for (let i = 0; i < numCalls; i++) {
+        const randomId = Math.floor(Math.random() * 1000) + 1; // Random ID between 1 and 1000
+        const url = `https://deezerdevs-deezer.p.rapidapi.com/artist/${randomId}`;
+        const options = {
+          method: 'GET',
+          headers: {
+            'x-rapidapi-key': '5f16ed5ffemshe4550dacca20074p1a0450jsnfe1557d7577b',
+            'x-rapidapi-host': 'deezerdevs-deezer.p.rapidapi.com'
+          }
+        };
+
+        // Push the fetch promise to the array
+        fetchPromises.push(
+          fetch(url, options)
+            .then(response => response.json()) // Assuming the response is JSON
+            .then(result => result)
+            .catch(error => {
+              console.error(error);
+              return null; // If error occurs, return null
+            })
+        );
+      }
+
+      // Wait for all the fetch requests to resolve
+      try {
+        const results = await Promise.all(fetchPromises);
+        setArtistsData(results.filter(item => item !== null)); // Filter out nulls from failed requests
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+      finally {
+        console.log(artistsData)
+      }
+    };
+
+    fetchRandomArtistData();
+  }, [])
   const data = [
     {
       id: "1",
@@ -114,26 +159,18 @@ const Home = ({navigation}:{navigation:any}) => {
           }}
           style={{ maxHeight: 120 }} // Restrict height to desired value
         >
-          {data.map((item) => (
-            <View key={item.id} style={styles.itemContainer}>
+          {artistsData.map((item,index) => (
+            <View key={index} style={styles.itemContainer}>
               {/* Media Image as Avatar */}
               <Avatar
                 size={100}
                 rounded
-                source={{ uri: item.avatar }}
+                source={{ uri: item.picture_big                }}
                 containerStyle={styles.mediaAvatar}
               />
 
               {/* Type Icon Overlay */}
-              <Avatar
-                size={24}
-                rounded
-                containerStyle={styles.iconOverlay}
-                icon={{
-                  name: item.type === "audio" ? "music" : "video",
-                  color: "white",
-                }}
-              />
+                <Text>{item.name}</Text>
             </View>
           ))}
 
@@ -201,6 +238,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   }, itemContainer: {
     marginRight: 15,
-    position: "relative",
+  alignItems:"center"
+
   }
 })
