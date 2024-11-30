@@ -2,17 +2,18 @@
 import "react-native-gesture-handler"
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+
 
 // Pages 
 import Home from './Page/Home';
 import Discover from './Page/Discover';
 import Profile from './Page/Profile';
+import PlayerPage from "./Page/PlayerPage";
 
 // Navigation 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { bottomTabs, TabHeight } from "./utils/BottomTabs";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -31,10 +32,12 @@ const Main = () => {
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer >
 
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Main" component={Main} />
+      <Stack.Navigator >
+        <Stack.Screen name="Player" options={{ headerShown: true, presentation: "modal", headerShadowVisible: false, headerTitleAlign: "center", headerTitle: "Now Playing", cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS }} component={PlayerPage} />
+
+        <Stack.Screen name="Main" options={{ headerShown: false }} component={Main} />
       </Stack.Navigator>
       <StatusBar style="dark" />
     </NavigationContainer>

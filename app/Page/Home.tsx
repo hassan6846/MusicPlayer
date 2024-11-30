@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View,TouchableOpacity } from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 //ui
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -27,63 +27,13 @@ const Home = () => {
       type: "audio",
     },
   ];
-  const [activeIndex, setActiveIndex] = React.useState(0);  
-
-  const imageUrls = [
-    "https://via.placeholder.com/150",
-    "https://via.placeholder.com/150/0000FF",
-    "https://via.placeholder.com/150/FF0000"  
-  ];
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView 
-      showsVerticalScrollIndicator={false}
-      >
-      <View style={{ position: 'relative' }}>
-      <TouchableOpacity onPress={() => alert('Avatar clicked')}>
-        <Avatar 
-          source={{ uri: imageUrls[activeIndex] }}  // Use active image
-          containerStyle={{ width: '100%', height: 240, borderRadius: 5 }} 
-          avatarStyle={{ borderRadius: 5 }} 
-        />
-      </TouchableOpacity>
+      <ScrollView>
+        <View style={{ position: "relative" }}>
+          <Avatar source={{ uri: "https://via.placeholder.com/150" }} containerStyle={{ width: "100%", height: 240, borderRadius: 5 }} avatarStyle={{ borderRadius: 5 }} />
 
-      <View 
-        style={{
-          position: "absolute", 
-          bottom: 20, 
-          left: "50%", 
-          display: "flex", 
-          flexDirection: "row", 
-          justifyContent: "center", 
-          alignItems: "center", 
-          transform: [{ translateX: -50 }]  // Centering horizontally
-        }}
-      >
-        {imageUrls.map((url, index) => (
-          <TouchableOpacity 
-            key={index} 
-            onPress={() => setActiveIndex(index)} // Set active index on press
-            style={{
-              marginHorizontal: 5,
-              borderRadius: 50,
-              overflow: 'hidden', // Clip the image inside the circle
-            }}
-          >
-            <Avatar
-              source={{ uri: url }}
-              containerStyle={{
-                width: 20,
-                height: 20,
-                borderRadius: 50,
-                borderWidth: 2,
-                borderColor: index === activeIndex ? 'orange' : 'gray' // Border color changes based on active state
-              }}
-            />
-          </TouchableOpacity>
-        ))}
-      </View>
-    </View>
+        </View>
         <Text style={styles.title}>Hot</Text>
         <ScrollView
           horizontal={true}
