@@ -4,7 +4,10 @@ import React from 'react'
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Avatar } from '@rneui/themed'
 
-const Home = () => {
+const Home = ({navigation}:{navigation:any}) => {
+  React.useEffect(()=>{
+
+})
   const data = [
     {
       id: "1",

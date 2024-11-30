@@ -35,9 +35,10 @@ export default function App() {
     <NavigationContainer >
 
       <Stack.Navigator >
+      <Stack.Screen name="Main" options={{ headerShown: false }} component={Main} />
+
         <Stack.Screen name="Player" options={{ headerShown: true, presentation: "modal", headerShadowVisible: false, headerTitleAlign: "center", headerTitle: "Now Playing", cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS }} component={PlayerPage} />
 
-        <Stack.Screen name="Main" options={{ headerShown: false }} component={Main} />
       </Stack.Navigator>
       <StatusBar style="dark" />
     </NavigationContainer>

@@ -6,7 +6,7 @@ import { Avatar } from '@rneui/themed'
 import { Icon } from '@rneui/base'
 import { DefaultImageSrc } from '../utils/BottomTabs'
 
-const Discover = () => {
+const Discover = ({navigation}:{navigation:any}) => {
     const genres = [
         "All", "Acoustic", "Party", "Rock", "Soul & Funk", "Dance & EDM", "Country",
         "At home", "R&B", "Sleep", "Electronic", "Gaming", "Metal", "Lofi",
@@ -84,10 +84,10 @@ const Discover = () => {
     ];
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView  style={styles.container}>
 
-            <ScrollView>
-                <View>
+            <ScrollView >
+                <View> 
                     <Text style={styles.title}>Music Genres</Text>
                     <ScrollView
                         horizontal
