@@ -1,14 +1,253 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View,TouchableOpacity } from 'react-native'
 import React from 'react'
+//ui
+import { SafeAreaView } from "react-native-safe-area-context"
+import { Avatar } from '@rneui/themed'
 
 const Home = () => {
+  const data = [
+    {
+      id: "1",
+      avatar: "https://via.placeholder.com/150",
+      type: "audio",
+    },
+    {
+      id: "2",
+      avatar: "https://via.placeholder.com/150",
+      type: "video",
+    },
+    {
+      id: "3",
+      avatar: "https://via.placeholder.com/150",
+      type: "audio",
+    },
+    {
+      id: "4",
+      avatar: "https://via.placeholder.com/150",
+      type: "audio",
+    },
+  ];
+  const [activeIndex, setActiveIndex] = React.useState(0);  
+
+  const imageUrls = [
+    "https://via.placeholder.com/150",
+    "https://via.placeholder.com/150/0000FF",
+    "https://via.placeholder.com/150/FF0000"  
+  ];
   return (
-    <View>
-      <Text>Home</Text>
+    <SafeAreaView style={styles.container}>
+      <ScrollView 
+      showsVerticalScrollIndicator={false}
+      >
+      <View style={{ position: 'relative' }}>
+      <TouchableOpacity onPress={() => alert('Avatar clicked')}>
+        <Avatar 
+          source={{ uri: imageUrls[activeIndex] }}  // Use active image
+          containerStyle={{ width: '100%', height: 240, borderRadius: 5 }} 
+          avatarStyle={{ borderRadius: 5 }} 
+        />
+      </TouchableOpacity>
+
+      <View 
+        style={{
+          position: "absolute", 
+          bottom: 20, 
+          left: "50%", 
+          display: "flex", 
+          flexDirection: "row", 
+          justifyContent: "center", 
+          alignItems: "center", 
+          transform: [{ translateX: -50 }]  // Centering horizontally
+        }}
+      >
+        {imageUrls.map((url, index) => (
+          <TouchableOpacity 
+            key={index} 
+            onPress={() => setActiveIndex(index)} // Set active index on press
+            style={{
+              marginHorizontal: 5,
+              borderRadius: 50,
+              overflow: 'hidden', // Clip the image inside the circle
+            }}
+          >
+            <Avatar
+              source={{ uri: url }}
+              containerStyle={{
+                width: 20,
+                height: 20,
+                borderRadius: 50,
+                borderWidth: 2,
+                borderColor: index === activeIndex ? 'orange' : 'gray' // Border color changes based on active state
+              }}
+            />
+          </TouchableOpacity>
+        ))}
+      </View>
     </View>
+        <Text style={styles.title}>Hot</Text>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={true}
+          contentContainerStyle={{
+            alignItems: 'center', // Center items vertically
+          }}
+          style={{ maxHeight: 120 }} // Restrict height to desired value
+        >
+          {data.map((item) => (
+            <View key={item.id} style={styles.itemContainer}>
+              {/* Media Image as Avatar */}
+              <Avatar
+                size={100}
+
+                source={{ uri: item.avatar }}
+                containerStyle={styles.mediaAvatar}
+              />
+
+              {/* Type Icon Overlay */}
+              <Avatar
+                size={24}
+                rounded
+                containerStyle={styles.iconOverlay}
+                icon={{
+                  name: item.type === "audio" ? "music" : "video",
+                  color: "white",
+                }}
+              />
+            </View>
+          ))}
+
+
+        </ScrollView>
+        <Text style={styles.title}>2024 Hits</Text>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={true}
+          contentContainerStyle={{
+            alignItems: 'center', // Center items vertically
+          }}
+          style={{ maxHeight: 120 }} // Restrict height to desired value
+        >
+          {data.map((item) => (
+            <View key={item.id} style={styles.itemContainer}>
+              {/* Media Image as Avatar */}
+              <Avatar
+                size={100}
+
+                source={{ uri: item.avatar }}
+                containerStyle={styles.mediaAvatar}
+              />
+
+              {/* Type Icon Overlay */}
+              <Avatar
+                size={24}
+                rounded
+                containerStyle={styles.iconOverlay}
+                icon={{
+                  name: item.type === "audio" ? "music" : "video",
+                  color: "white",
+                }}
+              />
+            </View>
+          ))}
+
+
+        </ScrollView>
+        <Text style={styles.title}>Artists</Text>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={true}
+          contentContainerStyle={{
+            alignItems: 'center', // Center items vertically
+          }}
+          style={{ maxHeight: 120 }} // Restrict height to desired value
+        >
+          {data.map((item) => (
+            <View key={item.id} style={styles.itemContainer}>
+              {/* Media Image as Avatar */}
+              <Avatar
+                size={100}
+                rounded
+                source={{ uri: item.avatar }}
+                containerStyle={styles.mediaAvatar}
+              />
+
+              {/* Type Icon Overlay */}
+              <Avatar
+                size={24}
+                rounded
+                containerStyle={styles.iconOverlay}
+                icon={{
+                  name: item.type === "audio" ? "music" : "video",
+                  color: "white",
+                }}
+              />
+            </View>
+          ))}
+
+
+        </ScrollView>
+        <Text style={styles.title}>Podcasts</Text>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={true}
+          contentContainerStyle={{
+            alignItems: 'center', // Center items vertically
+          }}
+          style={{ maxHeight: 120 }} // Restrict height to desired value
+        >
+          {data.map((item) => (
+            <View key={item.id} style={styles.itemContainer}>
+              {/* Media Image as Avatar */}
+              <Avatar
+                size={100}
+
+                source={{ uri: item.avatar }}
+                containerStyle={styles.mediaAvatar}
+              />
+
+              {/* Type Icon Overlay */}
+              <Avatar
+                size={24}
+                rounded
+                containerStyle={styles.iconOverlay}
+                icon={{
+                  name: item.type === "audio" ? "music" : "video",
+                  color: "white",
+                }}
+              />
+            </View>
+          ))}
+
+
+        </ScrollView>
+      </ScrollView>
+
+    </SafeAreaView>
   )
 }
 
 export default Home
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    padding: 20
+  }, title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    marginTop: 20,
+  },
+  iconOverlay: {
+    position: "absolute",
+    top: 5,
+    right: 5,
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+  }, mediaAvatar: {
+    borderRadius: 10,
+  }, itemContainer: {
+    marginRight: 15,
+    position: "relative",
+  }
+})
