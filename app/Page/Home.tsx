@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 import React from 'react'
 //ui
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -8,50 +8,78 @@ const Home = ({ navigation }: { navigation: any }) => {
   const [artistsData, setArtistsData] = React.useState<any>([]);
   const [loading, setLoading] = React.useState<any>(true);
   const [error, setError] = React.useState<any>(null);
+  const [playlistData, setPlaylistData] = React.useState<any>(null);
+
+  ////////////////////////////////////////////
+  const fetchArtistData = async (): Promise<any[]> => {
+    const fetchPromises = [];
+    const numCalls = 10;
+
+    for (let i = 0; i < numCalls; i++) {
+      const randomId = Math.floor(Math.random() * 1000) + 1; // Random ID between 1 and 1000
+      const url = `https://deezerdevs-deezer.p.rapidapi.com/artist/${randomId}`;
+      const options = {
+        method: 'GET',
+        headers: {
+          'x-rapidapi-key': '5f16ed5ffemshe4550dacca20074p1a0450jsnfe1557d7577b',
+          'x-rapidapi-host': 'deezerdevs-deezer.p.rapidapi.com',
+        },
+      };
+
+      fetchPromises.push(
+        fetch(url, options)
+          .then((response) => response.json())
+          .catch((error) => {
+            console.error(error);
+            return null; // Handle failed requests gracefully
+          })
+      );
+    }
+
+    return Promise.all(fetchPromises).then((results) => results.filter((item) => item !== null));
+  };
+
+  // Function to fetch playlist data
+  const fetchPlaylistData = async (): Promise<any> => {
+    const url = `https://deezerdevs-deezer.p.rapidapi.com/playlist/13253799423`;
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-key': '5f16ed5ffemshe4550dacca20074p1a0450jsnfe1557d7577b',
+        'x-rapidapi-host': 'deezerdevs-deezer.p.rapidapi.com',
+      },
+    };
+
+    return fetch(url, options)
+      .then((response) => response.json())
+      .catch((error) => {
+        console.error(error);
+        return null;
+      });
+  };
+  ///////////////////////////////////////////////
+
   React.useEffect(() => {
-    const fetchRandomArtistData = async () => {
-      const fetchPromises = [];
-      const numCalls = 10;
-
-      // Generate random IDs and create API requests
-      for (let i = 0; i < numCalls; i++) {
-        const randomId = Math.floor(Math.random() * 1000) + 1; // Random ID between 1 and 1000
-        const url = `https://deezerdevs-deezer.p.rapidapi.com/artist/${randomId}`;
-        const options = {
-          method: 'GET',
-          headers: {
-            'x-rapidapi-key': '5f16ed5ffemshe4550dacca20074p1a0450jsnfe1557d7577b',
-            'x-rapidapi-host': 'deezerdevs-deezer.p.rapidapi.com'
-          }
-        };
-
-        // Push the fetch promise to the array
-        fetchPromises.push(
-          fetch(url, options)
-            .then(response => response.json()) // Assuming the response is JSON
-            .then(result => result)
-            .catch(error => {
-              console.error(error);
-              return null; // If error occurs, return null
-            })
-        );
-      }
-
-      // Wait for all the fetch requests to resolve
+    const fetchData = async () => {
       try {
-        const results = await Promise.all(fetchPromises);
-        setArtistsData(results.filter(item => item !== null)); // Filter out nulls from failed requests
+        const [artists, playlist] = await Promise.all([
+          fetchArtistData(),
+          fetchPlaylistData(),
+        ]);
+        setArtistsData(artists);
+        console.log("Artists Data:", artists);
+        setPlaylistData(playlist);
+        console.log("Playlist Data:", playlist);
+      } catch (err) {
+        setError(err.message);
+      } finally {
         setLoading(false);
-      } catch (error) {
-        setError(error.message);
-        setLoading(false);
-      }
-      finally {
-        console.log(artistsData)
       }
     };
 
-    fetchRandomArtistData();
+    fetchData();
+
+
   }, [])
   const data = [
     {
@@ -77,141 +105,151 @@ const Home = ({ navigation }: { navigation: any }) => {
   ];
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View style={{ position: "relative" }}>
-          <Avatar source={{ uri: "https://via.placeholder.com/150" }} containerStyle={{ width: "100%", height: 240, borderRadius: 5 }} avatarStyle={{ borderRadius: 5 }} />
-
+      {loading ? (
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <ActivityIndicator size="large" />
         </View>
-        <Text style={styles.title}>Hot</Text>
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={true}
-          contentContainerStyle={{
-            alignItems: 'center', // Center items vertically
-          }}
-          style={{ maxHeight: 120 }} // Restrict height to desired value
-        >
-          {data.map((item) => (
-            <View key={item.id} style={styles.itemContainer}>
-              {/* Media Image as Avatar */}
-              <Avatar
-                size={100}
+      ) : error ? (
 
-                source={{ uri: item.avatar }}
-                containerStyle={styles.mediaAvatar}
-              />
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <Text>No Internet</Text>
+        </View>
+      ) : (
+        <ScrollView>
+          <View style={{ position: "relative" }}>
+            <Avatar source={{ uri: "https://via.placeholder.com/150" }} containerStyle={{ width: "100%", height: 240, borderRadius: 5 }} avatarStyle={{ borderRadius: 5 }} />
 
-              {/* Type Icon Overlay */}
-              <Avatar
-                size={24}
-                rounded
-                containerStyle={styles.iconOverlay}
-                icon={{
-                  name: item.type === "audio" ? "music" : "video",
-                  color: "white",
-                }}
-              />
-            </View>
-          ))}
+          </View>
+          <Text style={styles.title}>Hot</Text>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={true}
+            contentContainerStyle={{
+              alignItems: 'center', // Center items vertically
+            }}
+            style={{ maxHeight: 120 }} // Restrict height to desired value
+          >
+            {data.map((item) => (
+              <View key={item.id} style={styles.itemContainer}>
+                {/* Media Image as Avatar */}
+                <Avatar
+                  size={100}
 
+                  source={{ uri: item.avatar }}
+                  containerStyle={styles.mediaAvatar}
+                />
 
-        </ScrollView>
-        <Text style={styles.title}>2024 Hits</Text>
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={true}
-          contentContainerStyle={{
-            alignItems: 'center', // Center items vertically
-          }}
-          style={{ maxHeight: 120 }} // Restrict height to desired value
-        >
-          {data.map((item) => (
-            <View key={item.id} style={styles.itemContainer}>
-              {/* Media Image as Avatar */}
-              <Avatar
-                size={100}
-
-                source={{ uri: item.avatar }}
-                containerStyle={styles.mediaAvatar}
-              />
-
-              {/* Type Icon Overlay */}
-              <Avatar
-                size={24}
-                rounded
-                containerStyle={styles.iconOverlay}
-                icon={{
-                  name: item.type === "audio" ? "music" : "video",
-                  color: "white",
-                }}
-              />
-            </View>
-          ))}
+                {/* Type Icon Overlay */}
+                <Avatar
+                  size={24}
+                  rounded
+                  containerStyle={styles.iconOverlay}
+                  icon={{
+                    name: item.type === "audio" ? "music" : "video",
+                    color: "white",
+                  }}
+                />
+              </View>
+            ))}
 
 
-        </ScrollView>
-        <Text style={styles.title}>Artists</Text>
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={true}
-          contentContainerStyle={{
-            alignItems: 'center', // Center items vertically
-          }}
-          style={{ maxHeight: 120 }} // Restrict height to desired value
-        >
-          {artistsData.map((item,index) => (
-            <View key={index} style={styles.itemContainer}>
-              {/* Media Image as Avatar */}
-              <Avatar
-                size={100}
-                rounded
-                source={{ uri: item.picture_big                }}
-                containerStyle={styles.mediaAvatar}
-              />
+          </ScrollView>
+          <Text style={styles.title}>2024 Hit Songs</Text>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={true}
+            contentContainerStyle={{
+              alignItems: 'center', // Center items vertically
+            }}
+            style={{ maxHeight: 120 }} // Restrict height to desired value
+          >
+            {data.map((item) => (
+              <View key={item.id} style={styles.itemContainer}>
+                {/* Media Image as Avatar */}
+                <Avatar
+                  size={100}
 
-              {/* Type Icon Overlay */}
+                  source={{ uri: item.avatar }}
+                  containerStyle={styles.mediaAvatar}
+                />
+
+                {/* Type Icon Overlay */}
+                <Avatar
+                  size={24}
+                  rounded
+                  containerStyle={styles.iconOverlay}
+                  icon={{
+                    name: item.type === "audio" ? "music" : "video",
+                    color: "white",
+                  }}
+                />
+              </View>
+            ))}
+
+
+          </ScrollView>
+          <Text style={styles.title}>Artists</Text>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={true}
+            contentContainerStyle={{
+              alignItems: 'center', // Center items vertically
+            }}
+            style={{ maxHeight: 120 }} // Restrict height to desired value
+          >
+            {artistsData.map((item, index) => (
+              <View key={index} style={styles.itemContainer}>
+                {/* Media Image as Avatar */}
+                <Avatar
+                  size={100}
+                  rounded
+                  source={{ uri: item.picture_big }}
+                  containerStyle={styles.mediaAvatar}
+                />
+
+                {/* Type Icon Overlay */}
                 <Text>{item.name}</Text>
-            </View>
-          ))}
+              </View>
+            ))}
 
 
+          </ScrollView>
+          <Text style={styles.title}>Podcasts</Text>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={true}
+            contentContainerStyle={{
+              alignItems: 'center', // Center items vertically
+            }}
+            style={{ maxHeight: 120 }} // Restrict height to desired value
+          >
+            {data.map((item) => (
+              <View key={item.id} style={styles.itemContainer}>
+                {/* Media Image as Avatar */}
+                <Avatar
+                  size={100}
+
+                  source={{ uri: item.avatar }}
+                  containerStyle={styles.mediaAvatar}
+                />
+
+                {/* Type Icon Overlay */}
+                <Avatar
+                  size={24}
+                  rounded
+                  containerStyle={styles.iconOverlay}
+                  icon={{
+                    name: item.type === "audio" ? "music" : "video",
+                    color: "white",
+                  }}
+                />
+              </View>
+            ))}
+
+
+          </ScrollView>
         </ScrollView>
-        <Text style={styles.title}>Podcasts</Text>
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={true}
-          contentContainerStyle={{
-            alignItems: 'center', // Center items vertically
-          }}
-          style={{ maxHeight: 120 }} // Restrict height to desired value
-        >
-          {data.map((item) => (
-            <View key={item.id} style={styles.itemContainer}>
-              {/* Media Image as Avatar */}
-              <Avatar
-                size={100}
-
-                source={{ uri: item.avatar }}
-                containerStyle={styles.mediaAvatar}
-              />
-
-              {/* Type Icon Overlay */}
-              <Avatar
-                size={24}
-                rounded
-                containerStyle={styles.iconOverlay}
-                icon={{
-                  name: item.type === "audio" ? "music" : "video",
-                  color: "white",
-                }}
-              />
-            </View>
-          ))}
-
-
-        </ScrollView>
-      </ScrollView>
-
+      )}
     </SafeAreaView>
   )
 }
@@ -238,7 +276,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   }, itemContainer: {
     marginRight: 15,
-  alignItems:"center"
+    alignItems: "center"
 
   }
 })

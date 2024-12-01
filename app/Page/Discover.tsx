@@ -135,13 +135,13 @@ const Discover = ({navigation}:{navigation:any}) => {
                     horizontal={true}
                     showsHorizontalScrollIndicator={true}
                     contentContainerStyle={{
-                        alignItems: 'center', // Center items vertically
+                        alignItems: 'center', 
                     }}
-                    style={{ maxHeight: 120 }} // Restrict height to desired value
+                    style={{ maxHeight: 120 }} 
                 >
                     {data.map((item) => (
                         <View key={item.id} style={styles.itemContainer}>
-                            {/* Media Image as Avatar */}
+                          
                             <Avatar
                                 size={100}
                                 
@@ -149,7 +149,6 @@ const Discover = ({navigation}:{navigation:any}) => {
                                 containerStyle={styles.mediaAvatar}
                             />
 
-                            {/* Type Icon Overlay */}
                             <Avatar
                                 size={24}
                                 rounded
