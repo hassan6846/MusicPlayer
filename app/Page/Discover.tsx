@@ -6,7 +6,7 @@ import { Avatar } from '@rneui/themed'
 import { Icon } from '@rneui/base'
 import { DefaultImageSrc } from '../utils/BottomTabs'
 
-const Discover = ({navigation}:{navigation:any}) => {
+const Discover = ({ navigation }: { navigation: any }) => {
     const genres = [
         "All", "Acoustic", "Party", "Rock", "Soul & Funk", "Dance & EDM", "Country",
         "At home", "R&B", "Sleep", "Electronic", "Gaming", "Metal", "Lofi",
@@ -84,10 +84,10 @@ const Discover = ({navigation}:{navigation:any}) => {
     ];
 
     return (
-        <SafeAreaView  style={styles.container}>
+        <SafeAreaView style={styles.container}>
 
             <ScrollView >
-                <View> 
+                <View>
                     <Text style={styles.title}>Music Genres</Text>
                     <ScrollView
                         horizontal
@@ -135,16 +135,16 @@ const Discover = ({navigation}:{navigation:any}) => {
                     horizontal={true}
                     showsHorizontalScrollIndicator={true}
                     contentContainerStyle={{
-                        alignItems: 'center', 
+                        alignItems: 'center',
                     }}
-                    style={{ maxHeight: 120 }} 
+                    style={{ maxHeight: 120 }}
                 >
                     {data.map((item) => (
                         <View key={item.id} style={styles.itemContainer}>
-                          
+
                             <Avatar
                                 size={100}
-                                
+
                                 source={{ uri: item.avatar }}
                                 containerStyle={styles.mediaAvatar}
                             />
