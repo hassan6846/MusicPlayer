@@ -69,7 +69,7 @@ const Home = ({ navigation }: { navigation: any }) => {
         setArtistsData(artists);
         // console.log("Artists Data:", artists);
         setPlaylistData(playlist);
-        console.log("Playlist Data:", playlist.data);
+        console.log("Playlist Data:", playlist);
       } catch (err) {
         setError(err.message);
       } finally {
