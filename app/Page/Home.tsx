@@ -67,9 +67,9 @@ const Home = ({ navigation }: { navigation: any }) => {
           fetchPlaylistData(),
         ]);
         setArtistsData(artists);
-        console.log("Artists Data:", artists);
+        // console.log("Artists Data:", artists);
         setPlaylistData(playlist);
-        console.log("Playlist Data:", playlist);
+        console.log("Playlist Data:", playlist.data);
       } catch (err) {
         setError(err.message);
       } finally {
