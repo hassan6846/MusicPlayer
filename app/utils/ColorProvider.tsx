@@ -1,7 +1,7 @@
 export const Colors={
-    main:"#fff",
-    primary:"",
-    secondary:"",
-    font_head:"",
-    sub_head:""
+    main:"##ffffcc",
+    primary:"red",
+    secondary:"cyan",
+    font_head:"orange",
+    sub_head:"pink"
 }
