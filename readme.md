@@ -1,0 +1,6 @@
+-App feature 
+-App could have a content type and deeep linking so that user can play and select audio 
+-audio can be played in the background
+-Fetches all videos and plays them...
+-duration etc
+-uSe adsense for adding ads etc..
